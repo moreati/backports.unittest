@@ -38,6 +38,3 @@ def imports_under_tool(name, *subdirs):
 def import_tool(toolname):
     with import_helper.DirsOnSysPath(scriptsdir):
         return importlib.import_module(toolname)
-
-def load_tests(*args):
-    return support.load_package_tests(os.path.dirname(__file__), *args)
