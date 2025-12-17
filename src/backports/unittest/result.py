@@ -195,7 +195,10 @@ class TestResult(object):
             from backports.unittest._colorize import can_colorize
 
         colorize = hasattr(self, "stream") and can_colorize(file=self.stream)
-        msgLines = list(tb_e.format(colorize=colorize))
+        if sys.version_info >= (3, 13):
+            msgLines = list(tb_e.format(colorize=colorize))
+        else:
+            msgLines = list(tb_e.format())
 
         if self.buffer:
             output = sys.stdout.getvalue()

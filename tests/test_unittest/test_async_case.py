@@ -1,8 +1,17 @@
 import asyncio
 import contextvars
+import sys
 from backports import unittest
 from backports.unittest._test import support
 from backports.unittest._test.support import force_not_colorized
+
+try:
+    from asyncio import EventLoop
+except ImportError:
+    if sys.platform == 'win32':
+        from asyncio.windows_events import ProactorEventLoop as EventLoop
+    else:
+        from asyncio.unix_events import SelectorEventLoop as EventLoop
 
 try:
     from asyncio.events import _get_event_loop_policy, _set_event_loop_policy
@@ -499,7 +508,7 @@ class TestAsyncCase(unittest.TestCase):
         _set_event_loop_policy(None)
 
         class TestCase1(unittest.IsolatedAsyncioTestCase):
-            loop_factory = asyncio.EventLoop
+            loop_factory = EventLoop
 
             async def test_demo1(self):
                 pass
