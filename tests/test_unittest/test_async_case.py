@@ -4,6 +4,12 @@ from backports import unittest
 from backports.unittest._test import support
 from backports.unittest._test.support import force_not_colorized
 
+try:
+    from asyncio.events import _get_event_loop_policy, _set_event_loop_policy
+except ImportError:
+    from asyncio import get_event_loop_policy as _get_event_loop_policy
+    from asyncio import set_event_loop_policy as _set_event_loop_policy
+
 support.requires_working_socket(module=True)
 
 
@@ -12,7 +18,7 @@ class MyException(Exception):
 
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    _set_event_loop_policy(None)
 
 
 class TestCM:
@@ -480,7 +486,7 @@ class TestAsyncCase(unittest.TestCase):
 
         class TestCase1(unittest.IsolatedAsyncioTestCase):
             def setUp(self):
-                asyncio.events._get_event_loop_policy().get_event_loop()
+                _get_event_loop_policy().get_event_loop()
 
             async def test_demo1(self):
                 pass
@@ -490,7 +496,7 @@ class TestAsyncCase(unittest.TestCase):
         self.assertTrue(result.wasSuccessful())
 
     def test_loop_factory(self):
-        asyncio.events._set_event_loop_policy(None)
+        _set_event_loop_policy(None)
 
         class TestCase1(unittest.IsolatedAsyncioTestCase):
             loop_factory = asyncio.EventLoop

@@ -4,7 +4,10 @@ import sys
 import time
 import warnings
 
-from _colorize import get_theme
+try:
+    from _colorize import get_theme
+except ImportError:
+    from backports.unittest._colorize import get_theme
 
 from . import result
 from .case import _SubTest

@@ -3,7 +3,10 @@
 if __name__ != 'backports.unittest._test.support':
     raise ImportError('support must be imported from the test package')
 
-import annotationlib
+try:
+    from annotationlib import ForwardRef
+except ImportError:
+    from typing import ForwardRef
 import contextlib
 import functools
 import inspect
@@ -113,6 +116,13 @@ TEST_SUPPORT_DIR = os.path.dirname(os.path.abspath(__file__))
 TEST_HOME_DIR = os.path.dirname(TEST_SUPPORT_DIR)
 STDLIB_DIR = os.path.dirname(TEST_HOME_DIR)
 REPO_ROOT = os.path.dirname(STDLIB_DIR)
+
+
+if sys.version_info >= (3, 14):
+    from warnings import _get_filters as _warnings_get_filters
+else:
+    def _warnings_get_filters():
+        return warnings.filters
 
 
 class Error(Exception):
@@ -2425,7 +2435,7 @@ def clear_ignored_deprecations(*tokens: object) -> None:
         raise ValueError("Provide token or tokens returned by ignore_deprecations_from")
 
     new_filters = []
-    old_filters = warnings._get_filters()
+    old_filters = _warnings_get_filters()
     endswith = tuple(rf"(?#support{id(token)})" for token in tokens)
     for action, message, category, module, lineno in old_filters:
         if action == "ignore" and category is DeprecationWarning:
@@ -2702,7 +2712,7 @@ skip_on_s390x = unittest.skipIf(is_s390x, 'skipped on s390x')
 
 Py_TRACE_REFS = hasattr(sys, 'getobjects')
 
-_JIT_ENABLED = sys._jit.is_enabled()
+_JIT_ENABLED = hasattr(sys, '_jit') and sys._jit.is_enabled()
 requires_jit_enabled = unittest.skipUnless(_JIT_ENABLED, "requires JIT enabled")
 requires_jit_disabled = unittest.skipIf(_JIT_ENABLED, "requires JIT disabled")
 
@@ -2906,7 +2916,10 @@ def iter_slot_wrappers(cls):
 
 @contextlib.contextmanager
 def force_color(color: bool):
-    import _colorize
+    try:
+        import _colorize
+    except ImportError:
+        from backports.unittest import _colorize
     from .os_helper import EnvironmentVarGuard
 
     with (
@@ -3133,7 +3146,7 @@ class EqualToForwardRef:
         self.__owner__ = owner
 
     def __eq__(self, other):
-        if not isinstance(other, (EqualToForwardRef, annotationlib.ForwardRef)):
+        if not isinstance(other, (EqualToForwardRef, ForwardRef)):
             return NotImplemented
         return (
             self.__forward_arg__ == other.__forward_arg__

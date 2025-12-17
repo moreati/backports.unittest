@@ -13,9 +13,14 @@ from unittest import IsolatedAsyncioTestCase
 from backports.unittest.mock import (ANY, call, AsyncMock, patch, MagicMock, Mock,
                            create_autospec, sentinel, _CallList, seal)
 
+try:
+    from asyncio.events import _set_event_loop_policy
+except ImportError:
+    from asyncio import set_event_loop_policy as _set_event_loop_policy
+
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    _set_event_loop_policy(None)
 
 
 class AsyncClass:
