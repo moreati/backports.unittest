@@ -567,6 +567,8 @@ class TestSupport(unittest.TestCase):
             ['-X', 'tracemalloc=3'],
         ):
             with self.subTest(opts=opts):
+                if '-S' in opts and 'VIRTUAL_ENV' in os.environ:
+                    raise unittest.SkipTest('-S breaks execution in a virtualenv')
                 self.check_options(opts, 'args_from_interpreter_flags')
 
         self.check_options(['-I', '-E', '-s', '-P'],
