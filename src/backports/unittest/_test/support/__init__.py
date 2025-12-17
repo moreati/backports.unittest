@@ -2385,7 +2385,12 @@ def get_recursion_depth():
             frame = None
 
     # Ignore get_recursion_depth() frame.
-    return max(depth - 1, 1)
+    # Calculate max(depth - 1, 1) without calling max built-in.
+    # On Python <= 3.11 builtins still contribute to the recursion depth.
+    if depth > 1:
+        return depth - 1
+    else:
+        return 1
 
 def get_recursion_available():
     """Get the number of available frames before RecursionError.
@@ -2397,15 +2402,23 @@ def get_recursion_available():
     depth = get_recursion_depth()
     return limit - depth
 
-@contextlib.contextmanager
-def set_recursion_limit(limit):
-    """Temporarily change the recursion limit."""
-    original_limit = sys.getrecursionlimit()
-    try:
-        sys.setrecursionlimit(limit)
-        yield
-    finally:
-        sys.setrecursionlimit(original_limit)
+class set_recursion_limit:
+    """Temporarily change the recursion limit.
+
+    This has been rewritten to avoid the additional stack depth of going
+    through contextlib.contextmanager and next().
+    On Python <= 3.11 builtins still contribute to the recursion depth.
+    """
+    def __init__(self, limit):
+        self._original_limit = sys.getrecursionlimit()
+        self._limit = limit
+
+    def __enter__(self):
+        sys.setrecursionlimit(self._limit)
+        return self
+
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        sys.setrecursionlimit(self._original_limit)
 
 def infinite_recursion(max_depth=None):
     if max_depth is None:
@@ -2416,7 +2429,15 @@ def infinite_recursion(max_depth=None):
     elif max_depth < 3:
         raise ValueError(f"max_depth must be at least 3, got {max_depth}")
     depth = get_recursion_depth()
-    depth = max(depth - 1, 1)  # Ignore infinite_recursion() frame.
+
+    # Ignore infinite_recursion() frame.
+    # Calculate max(depth - 1, 1) without calling max built-in.
+    # On Python <= 3.11 builtins still contribute to the recursion depth.
+    if depth > 1:
+        depth = depth - 1
+    else:
+        depth = 1
+
     limit = depth + max_depth
     return set_recursion_limit(limit)
 
