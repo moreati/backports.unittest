@@ -1,7 +1,7 @@
 import io
 import sys
 
-import unittest
+from backports import unittest
 
 
 def resultFactory(*_):

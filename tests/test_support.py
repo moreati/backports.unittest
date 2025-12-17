@@ -13,15 +13,15 @@ import sys
 import sysconfig
 import tempfile
 import textwrap
-import unittest
+from backports import unittest
 import warnings
 
-from test import support
-from test.support import import_helper
-from test.support import os_helper
-from test.support import script_helper
-from test.support import socket_helper
-from test.support import warnings_helper
+from backports.unittest._test import support
+from backports.unittest._test.support import import_helper
+from backports.unittest._test.support import os_helper
+from backports.unittest._test.support import script_helper
+from backports.unittest._test.support import socket_helper
+from backports.unittest._test.support import warnings_helper
 
 TESTFN = os_helper.TESTFN
 
@@ -56,7 +56,7 @@ class TestSupport(unittest.TestCase):
     def setUpClass(cls):
         orig_filter_len = len(warnings._get_filters())
         cls._warnings_helper_token = support.ignore_deprecations_from(
-            "test.support.warnings_helper", like=".*used in test_support.*"
+            "backports.unittest._test.support.warnings_helper", like=".*used in test_support.*"
         )
         cls._test_support_token = support.ignore_deprecations_from(
             __name__, like=".*You should NOT be seeing this.*"
@@ -239,8 +239,8 @@ class TestSupport(unittest.TestCase):
         # Run the test as an external script, because it uses fork.
         script_helper.assert_python_ok("-c", textwrap.dedent("""
             import os
-            from test import support
-            from test.support import os_helper
+            from backports.unittest._test import support
+            from backports.unittest._test.support import os_helper
             with os_helper.temp_cwd() as temp_path:
                 pid = os.fork()
                 if pid != 0:
@@ -473,10 +473,10 @@ class TestSupport(unittest.TestCase):
         not_exported = {'load_tests', "TestProgram", "BaseTestSuite"}
         support.check__all__(self,
                              unittest,
-                             ("unittest.result", "unittest.case",
-                              "unittest.suite", "unittest.loader",
-                              "unittest.main", "unittest.runner",
-                              "unittest.signals", "unittest.async_case"),
+                             ("backports.unittest.result", "backports.unittest.case",
+                              "backports.unittest.suite", "backports.unittest.loader",
+                              "backports.unittest.main", "backports.unittest.runner",
+                              "backports.unittest.signals", "backports.unittest.async_case"),
                              extra=extra,
                              not_exported=not_exported)
 
@@ -521,7 +521,7 @@ class TestSupport(unittest.TestCase):
 
     @support.requires_subprocess()
     def check_options(self, args, func, expected=None):
-        code = f'from test.support import {func}; print(repr({func}()))'
+        code = f'from backports.unittest._test.support import {func}; print(repr({func}()))'
         cmd = [sys.executable, *args, '-c', code]
         env = {key: value for key, value in os.environ.items()
                if not key.startswith('PYTHON')}
@@ -622,7 +622,7 @@ class TestSupport(unittest.TestCase):
     def test_get_recursion_depth(self):
         # test support.get_recursion_depth()
         code = textwrap.dedent("""
-            from test import support
+            from backports.unittest._test import support
             import sys
 
             def check(cond):

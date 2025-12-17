@@ -3,9 +3,9 @@
 import subprocess
 import sys
 import os
-from test.support import script_helper, requires_subprocess
-import unittest
-from unittest import mock
+from backports.unittest._test.support import script_helper, requires_subprocess
+from backports import unittest
+from backports.unittest import mock
 
 
 class TestScriptHelper(unittest.TestCase):

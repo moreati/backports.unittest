@@ -36,7 +36,7 @@ from inspect import iscoroutinefunction
 import threading
 from dataclasses import fields, is_dataclass
 from types import CodeType, ModuleType, MethodType
-from unittest.util import safe_repr
+from backports.unittest.util import safe_repr
 from functools import wraps, partial
 from threading import RLock
 

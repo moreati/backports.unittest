@@ -7,7 +7,7 @@ import os
 import shutil
 import sys
 import textwrap
-import unittest
+from backports import unittest
 import warnings
 
 from .os_helper import unlink, temp_dir
@@ -286,13 +286,13 @@ def mock_register_at_fork(func):
     # bpo-30599: Mock os.register_at_fork() when importing the random module,
     # since this function doesn't allow to unregister callbacks and would leak
     # memory.
-    from unittest import mock
+    from backports.unittest import mock
     return mock.patch('os.register_at_fork', create=True)(func)
 
 
 @contextlib.contextmanager
 def ready_to_import(name=None, source=""):
-    from test.support import script_helper
+    from backports.unittest._test.support import script_helper
 
     # 1. Sets up a temporary directory and removes it afterwards
     # 2. Creates the module file

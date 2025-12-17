@@ -1,8 +1,8 @@
 import asyncio
 import contextvars
-import unittest
-from test import support
-from test.support import force_not_colorized
+from backports import unittest
+from backports.unittest._test import support
+from backports.unittest._test.support import force_not_colorized
 
 support.requires_working_socket(module=True)
 

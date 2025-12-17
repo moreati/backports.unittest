@@ -3,11 +3,11 @@ import re
 import sys
 import tempfile
 
-from test.support import ALWAYS_EQ
-import unittest
-from test.test_unittest.testmock.support import is_instance
-from unittest import mock
-from unittest.mock import (
+from backports.unittest._test.support import ALWAYS_EQ
+from backports import unittest
+from test_unittest.testmock.support import is_instance
+from backports.unittest import mock
+from backports.unittest.mock import (
     call, DEFAULT, patch, sentinel,
     MagicMock, Mock, NonCallableMock,
     NonCallableMagicMock, AsyncMock, _Call, _CallList,
@@ -64,7 +64,7 @@ class MockTest(unittest.TestCase):
         # if __all__ is badly defined then import * will raise an error
         # We have to exec it because you can't import * inside a method
         # in Python 3
-        exec("from unittest.mock import *")
+        exec("from backports.unittest.mock import *")
 
 
     def test_constructor(self):
@@ -2328,7 +2328,7 @@ class MockTest(unittest.TestCase):
                         old_patch)
 
         with patch.dict('sys.modules'):
-            del sys.modules['unittest.mock']
+            del sys.modules['backports.unittest.mock']
 
             # This trace will stop coverage being measured ;-)
             def trace(frame, event, arg):  # pragma: no cover
@@ -2337,7 +2337,7 @@ class MockTest(unittest.TestCase):
             self.addCleanup(sys.settrace, sys.gettrace())
             sys.settrace(trace)
 
-            from unittest.mock import (
+            from backports.unittest.mock import (
                 Mock, MagicMock, NonCallableMock, NonCallableMagicMock
             )
 

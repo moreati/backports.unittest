@@ -1,5 +1,5 @@
-import unittest
-from unittest import mock
+from backports import unittest
+from backports.unittest import mock
 
 
 class SampleObject:

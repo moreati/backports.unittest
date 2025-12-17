@@ -1,4 +1,4 @@
-import unittest
+from backports import unittest
 
 
 class TestEquality(object):

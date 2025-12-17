@@ -1,8 +1,8 @@
 import math
-import unittest
+from backports import unittest
 import os
 from inspect import iscoroutinefunction
-from unittest.mock import AsyncMock, Mock, MagicMock, _magics
+from backports.unittest.mock import AsyncMock, Mock, MagicMock, _magics
 
 
 

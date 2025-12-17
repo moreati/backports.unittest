@@ -1,5 +1,5 @@
 import os
-import unittest
+from backports import unittest
 
 
 def load_tests(loader, standard_tests, pattern):

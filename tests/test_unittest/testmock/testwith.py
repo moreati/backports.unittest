@@ -1,8 +1,8 @@
-import unittest
+from backports import unittest
 from warnings import catch_warnings
 
-from test.test_unittest.testmock.support import is_instance
-from unittest.mock import MagicMock, Mock, patch, sentinel, mock_open, call
+from test_unittest.testmock.support import is_instance
+from backports.unittest.mock import MagicMock, Mock, patch, sentinel, mock_open, call
 
 
 

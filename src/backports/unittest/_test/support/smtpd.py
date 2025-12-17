@@ -77,7 +77,7 @@ import getopt
 import time
 import socket
 import collections
-from test.support import asyncore, asynchat
+from backports.unittest._test.support import asyncore, asynchat
 from warnings import warn
 from email._header_value_parser import get_addr_spec, get_angle_addr
 

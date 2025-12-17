@@ -1,6 +1,6 @@
-import unittest
+from backports import unittest
 
-from test.test_unittest.support import LoggingResult
+from test_unittest.support import LoggingResult
 
 
 class Test_FunctionTestCase(unittest.TestCase):

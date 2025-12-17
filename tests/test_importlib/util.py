@@ -6,11 +6,11 @@ from importlib import machinery, util, invalidate_caches
 import marshal
 import os
 import os.path
-from test import support
-from test.support import import_helper
-from test.support import is_apple_mobile
-from test.support import os_helper
-import unittest
+from backports.unittest._test import support
+from backports.unittest._test.support import import_helper
+from backports.unittest._test.support import is_apple_mobile
+from backports.unittest._test.support import os_helper
+from backports import unittest
 import sys
 import tempfile
 import types

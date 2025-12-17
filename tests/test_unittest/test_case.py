@@ -12,15 +12,15 @@ import types
 
 from collections import UserString
 from copy import deepcopy
-from test import support
+from backports.unittest._test import support
 
-import unittest
+from backports import unittest
 
-from test.test_unittest.support import (
+from test_unittest.support import (
     TestEquality, TestHashing, LoggingResult, LegacyLoggingResult,
     ResultWithNoStartTestRunStopTestRun
 )
-from test.support import captured_stderr, gc_collect
+from backports.unittest._test.support import captured_stderr, gc_collect
 
 
 log_foo = logging.getLogger('foo')

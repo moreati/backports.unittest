@@ -11,7 +11,7 @@ See #10535.
 """
 
 import sys
-import unittest
+from backports import unittest
 import warnings
 
 def warnfun():

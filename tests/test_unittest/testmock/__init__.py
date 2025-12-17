@@ -1,5 +1,5 @@
 import os.path
-from test.support import load_package_tests
+from backports.unittest._test.support import load_package_tests
 
 
 def load_tests(*args):

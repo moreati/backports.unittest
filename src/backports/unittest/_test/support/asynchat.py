@@ -53,7 +53,7 @@ you - by calling your self.found_terminator() method.
 
 from collections import deque
 
-from test.support import asyncore
+from backports.unittest._test.support import asyncore
 
 
 class async_chat(asyncore.dispatcher):

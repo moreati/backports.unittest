@@ -1,9 +1,9 @@
 import time
-import unittest
+from backports import unittest
 import concurrent.futures
 
-from test.support import threading_helper
-from unittest.mock import patch, ThreadingMock
+from backports.unittest._test.support import threading_helper
+from backports.unittest.mock import patch, ThreadingMock
 
 
 threading_helper.requires_working_threading(module=True)

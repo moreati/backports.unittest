@@ -6,14 +6,14 @@ import os
 import sys
 from collections import OrderedDict
 
-import unittest
-import test
-from test.test_unittest.testmock import support
-from test.test_unittest.testmock.support import SomeClass, is_instance
+from backports import unittest
+from backports.unittest import _test as test
+from test_unittest.testmock import support
+from test_unittest.testmock.support import SomeClass, is_instance
 
-from test.support.import_helper import DirsOnSysPath
-from test.test_importlib.util import uncache
-from unittest.mock import (
+from backports.unittest._test.support.import_helper import DirsOnSysPath
+from test_importlib.util import uncache
+from backports.unittest.mock import (
     NonCallableMock, CallableMixin, sentinel,
     MagicMock, Mock, NonCallableMagicMock, patch, _patch,
     DEFAULT, call, _get_target
@@ -671,7 +671,7 @@ class PatchTest(unittest.TestCase):
         # the new dictionary during function call
         original = support.target.copy()
 
-        @patch.dict('test.test_unittest.testmock.support.target', {'bar': 'BAR'})
+        @patch.dict('test_unittest.testmock.support.target', {'bar': 'BAR'})
         def test():
             self.assertEqual(support.target, {'foo': 'BAZ', 'bar': 'BAR'})
 
@@ -1633,7 +1633,7 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(foo.fish, 'tasty')
 
 
-    @patch('unittest.mock.patch.TEST_PREFIX', 'foo')
+    @patch('backports.unittest.mock.patch.TEST_PREFIX', 'foo')
     def test_patch_test_prefix(self):
         class Foo(object):
             thing = 'original'
@@ -1656,7 +1656,7 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(foo.test_two(), 'original')
 
 
-    @patch('unittest.mock.patch.TEST_PREFIX', 'bar')
+    @patch('backports.unittest.mock.patch.TEST_PREFIX', 'bar')
     def test_patch_dict_test_prefix(self):
         class Foo(object):
             def bar_one(self):
@@ -1694,7 +1694,7 @@ class PatchTest(unittest.TestCase):
 
 
     def test_patch_nested_autospec_repr(self):
-        with patch('test.test_unittest.testmock.support', autospec=True) as m:
+        with patch('test_unittest.testmock.support', autospec=True) as m:
             self.assertIn(" name='support.SomeClass.wibble()'",
                           repr(m.SomeClass.wibble()))
             self.assertIn(" name='support.SomeClass().wibble()'",
@@ -1783,7 +1783,7 @@ class PatchTest(unittest.TestCase):
         # similar tests just for the case.
         # The same data is also used for testing import in test_import and
         # pkgutil.resolve_name() in test_pkgutil.
-        path = os.path.join(os.path.dirname(test.__file__), 'test_import', 'data')
+        path = os.path.normpath(os.path.join(__file__, '..', '..', '..', 'test_import', 'data'))
         def check(name):
             p = patch(name)
             p.start()
@@ -1813,7 +1813,7 @@ class PatchTest(unittest.TestCase):
             check_error('package3:submodule.A.attr')
 
     def test_name_resolution_import_rebinding2(self):
-        path = os.path.join(os.path.dirname(test.__file__), 'test_import', 'data')
+        path = os.path.normpath(os.path.join(__file__, '..', '..', '..', 'test_import', 'data'))
         def check(name):
             p = patch(name)
             p.start()
@@ -2062,16 +2062,15 @@ class PatchTest(unittest.TestCase):
         # This exercises the AttributeError branch of _dot_lookup.
 
         # make sure it's there
-        import test.test_unittest.testmock.support
+        import test_unittest.testmock.support
         # now make sure it's not:
         with patch.dict('sys.modules'):
-            del sys.modules['test.test_unittest.testmock.support']
-            del sys.modules['test.test_unittest.testmock']
-            del sys.modules['test.test_unittest']
-            del sys.modules['test']
+            del sys.modules['test_unittest.testmock.support']
+            del sys.modules['test_unittest.testmock']
+            del sys.modules['test_unittest']
 
             # now make sure we can patch based on a dotted path:
-            @patch('test.test_unittest.testmock.support.X')
+            @patch('test_unittest.testmock.support.X')
             def test(mock):
                 pass
             test()
@@ -2088,13 +2087,13 @@ class PatchTest(unittest.TestCase):
 
 
     def test_cant_set_kwargs_when_passing_a_mock(self):
-        @patch('test.test_unittest.testmock.support.X', new=object(), x=1)
+        @patch('test_unittest.testmock.support.X', new=object(), x=1)
         def test(): pass
         with self.assertRaises(TypeError):
             test()
 
     def test_patch_proxy_object(self):
-        @patch("test.test_unittest.testmock.support.g", new_callable=MagicMock())
+        @patch("test_unittest.testmock.support.g", new_callable=MagicMock())
         def test(_):
             pass
 

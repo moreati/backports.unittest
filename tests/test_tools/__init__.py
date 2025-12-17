@@ -2,9 +2,9 @@
 import contextlib
 import importlib
 import os.path
-import unittest
-from test import support
-from test.support import import_helper
+from backports import unittest
+from backports.unittest._test import support
+from backports.unittest._test.support import import_helper
 
 
 if not support.has_subprocess_support:

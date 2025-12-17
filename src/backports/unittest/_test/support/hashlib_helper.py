@@ -1,8 +1,8 @@
 import functools
 import hashlib
 import importlib
-import unittest
-from test.support.import_helper import import_module
+from backports import unittest
+from backports.unittest._test.support.import_helper import import_module
 
 try:
     import _hashlib

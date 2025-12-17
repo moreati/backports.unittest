@@ -2,7 +2,7 @@ import functools
 import sys
 import types
 
-import unittest
+from backports import unittest
 
 class Test_TestLoader(unittest.TestCase):
 
@@ -353,7 +353,7 @@ class Test_TestLoader(unittest.TestCase):
         loader = unittest.TestLoader()
 
         suite = loader.loadTestsFromName('sdasfasfasdf', unittest)
-        expected = "module 'unittest' has no attribute 'sdasfasfasdf'"
+        expected = "module 'backports.unittest' has no attribute 'sdasfasfasdf'"
         error, test = self.check_deferred_error(loader, suite)
         self.assertIn(
             expected, error,
@@ -397,8 +397,8 @@ class Test_TestLoader(unittest.TestCase):
         # XXX Should this raise AttributeError or ValueError?
         suite = loader.loadTestsFromName('abc () //', unittest)
         error, test = self.check_deferred_error(loader, suite)
-        expected = "module 'unittest' has no attribute 'abc () //'"
-        expected_regex = r"module 'unittest' has no attribute 'abc \(\) //'"
+        expected = "module 'backports.unittest' has no attribute 'abc () //'"
+        expected_regex = r"module 'backports.unittest' has no attribute 'abc \(\) //'"
         self.assertIn(
             expected, error,
             'missing error string in %r' % error)
@@ -611,7 +611,7 @@ class Test_TestLoader(unittest.TestCase):
         # We're going to try to load this module as a side-effect, so it
         # better not be loaded before we try.
         #
-        module_name = 'test.test_unittest.dummy'
+        module_name = 'test_unittest.dummy'
         sys.modules.pop(module_name, None)
 
         loader = unittest.TestLoader()
@@ -739,7 +739,7 @@ class Test_TestLoader(unittest.TestCase):
         loader = unittest.TestLoader()
 
         suite = loader.loadTestsFromNames(
-            ['unittest.loader.sdasfasfasdf', 'test.test_unittest.dummy'])
+            ['unittest.loader.sdasfasfasdf', 'test_unittest.dummy'])
         error, test = self.check_deferred_error(loader, list(suite)[0])
         expected = "module 'unittest.loader' has no attribute 'sdasfasfasdf'"
         self.assertIn(
@@ -761,7 +761,7 @@ class Test_TestLoader(unittest.TestCase):
 
         suite = loader.loadTestsFromNames(['sdasfasfasdf'], unittest)
         error, test = self.check_deferred_error(loader, list(suite)[0])
-        expected = "module 'unittest' has no attribute 'sdasfasfasdf'"
+        expected = "module 'backports.unittest' has no attribute 'sdasfasfasdf'"
         self.assertIn(
             expected, error,
             'missing error string in %r' % error)
@@ -781,7 +781,7 @@ class Test_TestLoader(unittest.TestCase):
 
         suite = loader.loadTestsFromNames(['TestCase', 'sdasfasfasdf'], unittest)
         error, test = self.check_deferred_error(loader, list(suite)[1])
-        expected = "module 'unittest' has no attribute 'sdasfasfasdf'"
+        expected = "module 'backports.unittest' has no attribute 'sdasfasfasdf'"
         self.assertIn(
             expected, error,
             'missing error string in %r' % error)
@@ -823,8 +823,8 @@ class Test_TestLoader(unittest.TestCase):
         # XXX Should this raise AttributeError or ValueError?
         suite = loader.loadTestsFromNames(['abc () //'], unittest)
         error, test = self.check_deferred_error(loader, list(suite)[0])
-        expected = "module 'unittest' has no attribute 'abc () //'"
-        expected_regex = r"module 'unittest' has no attribute 'abc \(\) //'"
+        expected = "module 'backports.unittest' has no attribute 'abc () //'"
+        expected_regex = r"module 'backports.unittest' has no attribute 'abc \(\) //'"
         self.assertIn(
             expected, error,
             'missing error string in %r' % error)
@@ -1036,7 +1036,7 @@ class Test_TestLoader(unittest.TestCase):
         # We're going to try to load this module as a side-effect, so it
         # better not be loaded before we try.
         #
-        module_name = 'test.test_unittest.dummy'
+        module_name = 'test_unittest.dummy'
         sys.modules.pop(module_name, None)
 
         loader = unittest.TestLoader()

@@ -8,7 +8,7 @@ import sys
 from contextlib import ExitStack
 from errno import EIO
 
-from test.support.import_helper import import_module
+from backports.unittest._test.support.import_helper import import_module
 
 def run_pty(script, input=b"dummy input\r", env=None):
     pty = import_module('pty')

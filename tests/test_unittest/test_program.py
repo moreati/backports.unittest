@@ -1,10 +1,10 @@
 import os
 import sys
 import subprocess
-from test import support
-import unittest
-import test.test_unittest
-from test.test_unittest.test_result import BufferedWriter
+from backports.unittest._test import support
+from backports import unittest
+import test_unittest
+from test_unittest.test_result import BufferedWriter
 
 
 @support.force_not_colorized_test_class
@@ -14,7 +14,7 @@ class Test_TestProgram(unittest.TestCase):
         loader = unittest.TestLoader()
 
         tests = [self]
-        expectedPath = os.path.abspath(os.path.dirname(test.test_unittest.__file__))
+        expectedPath = os.path.abspath(os.path.dirname(test_unittest.__file__))
 
         self.wasRun = False
         def _find_tests(start_dir, pattern):
@@ -22,7 +22,7 @@ class Test_TestProgram(unittest.TestCase):
             self.assertEqual(start_dir, expectedPath)
             return tests
         loader._find_tests = _find_tests
-        suite = loader.discover('test.test_unittest')
+        suite = loader.discover('test_unittest')
         self.assertTrue(self.wasRun)
         self.assertEqual(suite._tests, tests)
 
@@ -107,10 +107,10 @@ class Test_TestProgram(unittest.TestCase):
         sys.argv = ['faketest']
         runner = FakeRunner()
         program = unittest.TestProgram(testRunner=runner, exit=False,
-                                       defaultTest='test.test_unittest',
+                                       defaultTest='test_unittest',
                                        testLoader=self.TestLoader(self.FooBar))
         sys.argv = old_argv
-        self.assertEqual(('test.test_unittest',), program.testNames)
+        self.assertEqual(('test_unittest',), program.testNames)
 
     def test_defaultTest_with_iterable(self):
         class FakeRunner(object):
@@ -123,10 +123,10 @@ class Test_TestProgram(unittest.TestCase):
         runner = FakeRunner()
         program = unittest.TestProgram(
             testRunner=runner, exit=False,
-            defaultTest=['test.test_unittest', 'test.test_unittest2'],
+            defaultTest=['test_unittest', 'test_unittest2'],
             testLoader=self.TestLoader(self.FooBar))
         sys.argv = old_argv
-        self.assertEqual(['test.test_unittest', 'test.test_unittest2'],
+        self.assertEqual(['test_unittest', 'test_unittest2'],
                           program.testNames)
 
     def test_NonExit(self):
@@ -397,7 +397,7 @@ class TestCommandLineArgs(unittest.TestCase):
         self.assertIs(program.result, RESULT)
 
     def testCatchBreakInstallsHandler(self):
-        module = sys.modules['unittest.main']
+        module = sys.modules['backports.unittest.main']
         original = module.installHandler
         def restore():
             module.installHandler = original
@@ -508,7 +508,7 @@ class TestCommandLineArgs(unittest.TestCase):
     def testSelectedTestNamesFunctionalTest(self):
         def run_unittest(args):
             # Use -E to ignore PYTHONSAFEPATH env var
-            cmd = [sys.executable, '-E', '-m', 'unittest'] + args
+            cmd = [sys.executable, '-E', '-m', 'backports.unittest'] + args
             p = subprocess.Popen(cmd,
                 stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, cwd=os.path.dirname(__file__))
             with p:

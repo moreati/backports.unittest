@@ -1,5 +1,5 @@
-import unittest
-from unittest.util import safe_repr, sorted_list_difference, unorderable_list_difference
+from backports import unittest
+from backports.unittest.util import safe_repr, sorted_list_difference, unorderable_list_difference
 
 
 class TestUtil(unittest.TestCase):

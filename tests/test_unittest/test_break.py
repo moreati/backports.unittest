@@ -4,9 +4,9 @@ import os
 import sys
 import signal
 import weakref
-import unittest
+from backports import unittest
 
-from test import support
+from backports.unittest._test import support
 
 
 @unittest.skipUnless(hasattr(os, 'kill'), "Test requires os.kill")

@@ -3,12 +3,12 @@ import os
 import sys
 import pickle
 import subprocess
-from test import support
+from backports.unittest._test import support
 
-import unittest
-from unittest.case import _Outcome
+from backports import unittest
+from backports.unittest.case import _Outcome
 
-from test.test_unittest.support import (
+from test_unittest.support import (
     BufferedWriter,
     LoggingResult,
     ResultWithNoStartTestRunStopTestRun,

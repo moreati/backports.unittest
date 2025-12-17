@@ -1,6 +1,6 @@
 """Supporting definitions for the Python regression tests."""
 
-if __name__ != 'test.support':
+if __name__ != 'backports.unittest._test.support':
     raise ImportError('support must be imported from the test package')
 
 import annotationlib
@@ -17,7 +17,7 @@ import sysconfig
 import textwrap
 import time
 import types
-import unittest
+from backports import unittest
 import warnings
 
 
@@ -1712,8 +1712,8 @@ def check__all__(test_case, module, name_of_module=None, extra=(),
     Usage:
         import bar
         import foo
-        import unittest
-        from test import support
+        from backports import unittest
+        from backports.unittest._test import support
 
         class MiscTestCase(unittest.TestCase):
             def test__all__(self):

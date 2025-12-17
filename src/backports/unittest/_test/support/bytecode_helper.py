@@ -1,6 +1,6 @@
 """bytecode_helper - support tools for testing correct bytecode generation"""
 
-import unittest
+from backports import unittest
 import dis
 import io
 import opcode

@@ -1,9 +1,9 @@
 import inspect
 import time
 import types
-import unittest
+from backports import unittest
 
-from unittest.mock import (
+from backports.unittest.mock import (
     call, _Call, create_autospec, MagicMock,
     Mock, ANY, _CallList, patch, PropertyMock, _callable
 )

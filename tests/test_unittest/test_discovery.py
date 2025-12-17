@@ -5,13 +5,13 @@ import sys
 import types
 import pickle
 from importlib._bootstrap_external import NamespaceLoader
-from test import support
-from test.support import import_helper
+from backports.unittest._test import support
+from backports.unittest._test.support import import_helper
 
-import unittest
-import unittest.mock
-import test.test_unittest
-from test.test_importlib import util as test_util
+from backports import unittest
+import backports.unittest.mock
+import test_unittest
+from test_importlib import util as test_util
 
 
 class TestableTestProgram(unittest.TestProgram):
@@ -814,7 +814,7 @@ class TestDiscovery(unittest.TestCase):
         loader = unittest.TestLoader()
 
         tests = [self]
-        expectedPath = os.path.abspath(os.path.dirname(test.test_unittest.__file__))
+        expectedPath = os.path.abspath(os.path.dirname(test_unittest.__file__))
 
         self.wasRun = False
         def _find_tests(start_dir, pattern, namespace=None):
@@ -822,7 +822,7 @@ class TestDiscovery(unittest.TestCase):
             self.assertEqual(start_dir, expectedPath)
             return tests
         loader._find_tests = _find_tests
-        suite = loader.discover('test.test_unittest')
+        suite = loader.discover('test_unittest')
         self.assertTrue(self.wasRun)
         self.assertEqual(suite._tests, tests)
 
@@ -875,7 +875,7 @@ class TestDiscovery(unittest.TestCase):
         loader._find_tests = _find_tests
         loader.suiteClass = list
 
-        with unittest.mock.patch('builtins.__import__', _import):
+        with backports.unittest.mock.patch('builtins.__import__', _import):
             # Since loader.discover() can modify sys.path, restore it when done.
             with import_helper.DirsOnSysPath():
                 # Make sure to remove 'package' from sys.modules when done.
@@ -899,7 +899,7 @@ class TestDiscovery(unittest.TestCase):
         )
 
     def test_discovery_failed_discovery(self):
-        from test.test_importlib import util
+        from test_importlib import util
 
         loader = unittest.TestLoader()
         package = types.ModuleType('package')
@@ -908,7 +908,7 @@ class TestDiscovery(unittest.TestCase):
             sys.modules[packagename] = package
             return package
 
-        with unittest.mock.patch('builtins.__import__', _import):
+        with backports.unittest.mock.patch('builtins.__import__', _import):
             # Since loader.discover() can modify sys.path, restore it when done.
             with import_helper.DirsOnSysPath():
                 # Make sure to remove 'package' from sys.modules when done.

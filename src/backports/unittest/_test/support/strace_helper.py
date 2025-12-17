@@ -2,11 +2,11 @@ import re
 import sys
 import textwrap
 import os
-import unittest
+from backports import unittest
 from dataclasses import dataclass
 from functools import cache
-from test import support
-from test.support.script_helper import run_python_until_end
+from backports.unittest._test import support
+from backports.unittest._test.support.script_helper import run_python_until_end
 
 _strace_binary = "/usr/bin/strace"
 _syscall_regex = re.compile(

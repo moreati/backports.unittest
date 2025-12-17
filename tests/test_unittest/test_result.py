@@ -2,11 +2,11 @@ import io
 import sys
 import textwrap
 import traceback
-import unittest
-from unittest.util import strclass
-from test.support import warnings_helper
-from test.support import captured_stdout, force_not_colorized_test_class
-from test.test_unittest.support import BufferedWriter
+from backports import unittest
+from backports.unittest.util import strclass
+from backports.unittest._test.support import warnings_helper
+from backports.unittest._test.support import captured_stdout, force_not_colorized_test_class
+from test_unittest.support import BufferedWriter
 
 
 class MockTraceback(object):

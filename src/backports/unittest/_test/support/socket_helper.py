@@ -5,7 +5,7 @@ import socket
 import sys
 import subprocess
 import tempfile
-import unittest
+from backports import unittest
 
 from .. import support
 

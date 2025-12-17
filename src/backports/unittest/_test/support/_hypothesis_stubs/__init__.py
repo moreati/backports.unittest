@@ -1,6 +1,6 @@
 from enum import Enum
 import functools
-import unittest
+from backports import unittest
 
 __all__ = [
     "given",

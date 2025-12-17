@@ -4,9 +4,9 @@ import functools
 import sys
 import threading
 import time
-import unittest
+from backports import unittest
 
-from test import support
+from backports.unittest._test import support
 
 
 #=======================================================================

@@ -1,7 +1,7 @@
-import unittest
+from backports import unittest
 
-from test.support import force_not_colorized
-from test.test_unittest.support import LoggingResult
+from backports.unittest._test.support import force_not_colorized
+from test_unittest.support import LoggingResult
 
 
 class Test_TestSkipping(unittest.TestCase):

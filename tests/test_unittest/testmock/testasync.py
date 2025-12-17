@@ -2,15 +2,15 @@ import asyncio
 import gc
 import inspect
 import re
-import unittest
+from backports import unittest
 from contextlib import contextmanager
-from test import support
+from backports.unittest._test import support
 
 support.requires_working_socket(module=True)
 
 from asyncio import run
 from unittest import IsolatedAsyncioTestCase
-from unittest.mock import (ANY, call, AsyncMock, patch, MagicMock, Mock,
+from backports.unittest.mock import (ANY, call, AsyncMock, patch, MagicMock, Mock,
                            create_autospec, sentinel, _CallList, seal)
 
 

@@ -10,8 +10,8 @@ import subprocess
 import py_compile
 
 from importlib.util import source_from_cache
-from test import support
-from test.support.import_helper import make_legacy_pyc
+from backports.unittest._test import support
+from backports.unittest._test.support.import_helper import make_legacy_pyc
 
 
 # Cached result of the expensive test performed in the function below.

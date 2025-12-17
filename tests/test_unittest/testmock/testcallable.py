@@ -2,10 +2,10 @@
 # E-mail: fuzzyman AT voidspace DOT org DOT uk
 # http://www.voidspace.org.uk/python/mock/
 
-import unittest
-from test.test_unittest.testmock.support import is_instance, X, SomeClass
+from backports import unittest
+from test_unittest.testmock.support import is_instance, X, SomeClass
 
-from unittest.mock import (
+from backports.unittest.mock import (
     Mock, MagicMock, NonCallableMagicMock,
     NonCallableMock, patch, create_autospec,
     CallableMixin

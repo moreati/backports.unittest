@@ -9,7 +9,7 @@ text-based utility class for running the tests and reporting the results
 
 Simple usage:
 
-    import unittest
+    from backports import unittest
 
     class IntegerArithmeticTestCase(unittest.TestCase):
         def testAdd(self):  # test method names begin with 'test'
