@@ -56,6 +56,8 @@ class LacksExit:
 VAR = contextvars.ContextVar('VAR', default=())
 
 
+# TODO https://github.com/moreati/backports.unittest/issues/1
+@unittest.skipIf(not hasattr(asyncio, 'Runner'), 'Requires asyncio.Runner')
 class TestAsyncCase(unittest.TestCase):
     maxDiff = None
 

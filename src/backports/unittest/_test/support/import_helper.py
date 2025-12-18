@@ -12,6 +12,11 @@ import warnings
 
 from .os_helper import unlink, temp_dir
 
+HAVE_OVERRIDE_FROZEN_MODULES_FOR_TESTS = hasattr(
+    _imp,
+    '_override_frozen_modules_for_tests',
+)
+
 
 @contextlib.contextmanager
 def _ignore_deprecated_imports(ignore=True):

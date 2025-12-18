@@ -4,7 +4,11 @@ import re
 import sys
 import types
 import pickle
-from importlib._bootstrap_external import NamespaceLoader
+try:
+    from importlib._bootstrap_external import NamespaceLoader
+    HAVE_NAMESPACELOADER = True
+except ImportError:
+    HAVE_NAMESPACELOADER = False
 from backports.unittest._test import support
 from backports.unittest._test.support import import_helper
 
@@ -850,6 +854,10 @@ class TestDiscovery(unittest.TestCase):
                          'Can not use builtin modules '
                          'as dotted module names')
 
+    @unittest.skipIf(
+            not HAVE_NAMESPACELOADER,
+            'Requires importlib NamespaceLoader',
+    )
     def test_discovery_from_dotted_namespace_packages(self):
         loader = unittest.TestLoader()
 

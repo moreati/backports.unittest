@@ -92,6 +92,10 @@ class TestSupport(unittest.TestCase):
         self.assertRaises(unittest.SkipTest,
                           import_helper.import_module, "foo")
 
+    @unittest.skipIf(
+        not import_helper.HAVE_OVERRIDE_FROZEN_MODULES_FOR_TESTS,
+        'Requires CPython internal _override_frozen_modules_for_tests()',
+    )
     def test_import_fresh_module(self):
         import_helper.import_fresh_module("ftplib")
 
@@ -366,6 +370,10 @@ class TestSupport(unittest.TestCase):
         with self.assertRaises(AssertionError):
             support.check_syntax_error(self, "x=1")
 
+    @unittest.skipIf(
+        not import_helper.HAVE_OVERRIDE_FROZEN_MODULES_FOR_TESTS,
+        'Requires CPython internal _override_frozen_modules_for_tests()',
+    )
     def test_CleanImport(self):
         import importlib
         with import_helper.CleanImport("pprint"):
@@ -576,11 +584,18 @@ class TestSupport(unittest.TestCase):
             with self.subTest(opts=opts):
                 if '-S' in opts and 'VIRTUAL_ENV' in os.environ:
                     raise unittest.SkipTest('-S breaks execution in a virtualenv')
+                if '-P' in opts and not hasattr(sys.flags, 'safe_path'):
+                    raise unittest.SkipTest("Interpreter doesn't support sys.flags.safe_path")
                 self.check_options(opts, 'args_from_interpreter_flags')
 
-        self.check_options(['-I', '-E', '-s', '-P'],
-                           'args_from_interpreter_flags',
-                           ['-I'])
+        if hasattr(sys.flags, 'safe_path'):
+            self.check_options(['-I', '-E', '-s', '-P'],
+                               'args_from_interpreter_flags',
+                               ['-I'])
+        else:
+            self.check_options(['-I', '-E', '-s'],
+                               'args_from_interpreter_flags',
+                               ['-I'])
 
     def test_optim_args_from_interpreter_flags(self):
         # Test test.support.optim_args_from_interpreter_flags()
@@ -628,6 +643,11 @@ class TestSupport(unittest.TestCase):
         else:
             self.assertTrue(support.has_strftime_extensions)
 
+    # https://github.com/moreati/backports.unittest/issues/2
+    @unittest.skipIf(
+        sys.version_info < (3, 11),
+        'Relies on CPython implementation details',
+    )
     def test_get_recursion_depth(self):
         # test support.get_recursion_depth()
         code = textwrap.dedent("""
