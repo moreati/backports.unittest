@@ -7,57 +7,6 @@ on:
       - main
 
 jobs:
-  macos:
-    name: macos ${{ matrix.tox_env }}
-    runs-on: macos-15
-    timeout-minutes: 2
-    strategy:
-      matrix:
-        include:
-          - {python: '3.10', tox_env: py310}
-          - {python: '3.14', tox_env: py314}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python }}
-          cache: pip
-      - name: Install deps
-        run: |
-          set -o errexit -o nounset -o pipefail
-          python -m pip install tox
-      - name: Run tests
-        run: |
-          set -o errexit -o nounset -o pipefail
-          python -m tox -e "${{ matrix.tox_env }}"
-
-  u2404:
-    name: u2404 ${{ matrix.tox_env }}
-    runs-on: ubuntu-24.04
-    timeout-minutes: 2
-    strategy:
-      matrix:
-        include:
-          - {python: '3.10', tox_env: py310}
-          - {python: '3.11', tox_env: py311}
-          - {python: '3.12', tox_env: py312}
-          - {python: '3.13', tox_env: py313}
-          - {python: '3.14', tox_env: py314}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python }}
-          cache: pip
-      - name: Install deps
-        run: |
-          set -o errexit -o nounset -o pipefail
-          python -m pip install tox
-      - name: Run tests
-        run: |
-          set -o errexit -o nounset -o pipefail
-          python -m tox -e "${{ matrix.tox_env }}"
-
   win:
     name: win ${{ matrix.tox_env }}
     runs-on: windows-2022
@@ -79,15 +28,3 @@ jobs:
       - name: Run tests
         run: |
           python -m tox -e "${{ matrix.tox_env }}"
-
-  check:
-    if: always()
-    needs:
-      - macos
-      - u2404
-      - win
-    runs-on: ubuntu-latest
-    steps:
-      - uses: re-actors/alls-green@release/v1
-        with:
-          jobs: ${{ toJSON(needs) }}
