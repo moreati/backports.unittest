@@ -56,11 +56,34 @@ jobs:
           set -o errexit -o nounset -o pipefail
           python -m tox -e "${{ matrix.tox_env }}"
 
+  win:
+    name: win ${{ matrix.tox_env }}
+    runs-on: windows-2022
+    timeout-minutes: 2
+    strategy:
+      matrix:
+        include:
+          - {python: '3.10', tox_env: py310}
+          - {python: '3.14', tox_env: py314}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - name: Install deps
+        run: |
+          python -m pip install tox
+      - name: Run tests
+        run: |
+          python -m tox -e "${{ matrix.tox_env }}"
+
   check:
     if: always()
     needs:
       - macos
       - u2404
+      - win
     runs-on: ubuntu-latest
     steps:
       - uses: re-actors/alls-green@release/v1
