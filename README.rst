@@ -58,7 +58,7 @@ Related work
 
 .. |ghub_wfst| image:: https://img.shields.io/github/actions/workflow/status/moreati/backports.unittest/tests.yml?branch=main
                :alt: Build status
-               :target: https://github.com/moreati/backports.unittest/actions?query=branch%main
+               :target: https://github.com/moreati/backports.unittest/actions/workflows/tests.yml?query=branch%3Amain
 .. |pypi_vers| image:: https://img.shields.io/pypi/v/backports.unittest
                :target: https://pypi.org/project/backports.unittest
 .. |pypi_stat| image:: https://img.shields.io/pypi/status/backports.unittest
