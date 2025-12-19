@@ -2,7 +2,7 @@
 backports.unittest
 ==================
 
-|pypi_vers| |pypi_stat| |pypi_pyvr|
+|pypi_vers| |pypi_stat| |ghub_wfst| |pypi_pyvr|
 
 A backport of Python 3.14.x `unittest`_ and `unittest.mock`_ to older versions
 of Python, under the `backports`_ namespace.
@@ -56,6 +56,9 @@ Related work
 .. _unittest.mock: https://docs.python.org/3/library/unittest.mock.html
 .. _unittest2: https://pypi.org/project/unittest2/
 
+.. |ghub_wfst| image:: https://img.shields.io/github/actions/workflow/status/moreati/backports.unittest/tests.yml?branch=main
+               :alt: Build status
+               :target: https://github.com/moreati/backports.unittest/actions?query=branch%main
 .. |pypi_vers| image:: https://img.shields.io/pypi/v/backports.unittest
                :target: https://pypi.org/project/backports.unittest
 .. |pypi_stat| image:: https://img.shields.io/pypi/status/backports.unittest

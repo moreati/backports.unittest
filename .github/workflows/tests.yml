@@ -1,0 +1,44 @@
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  u2404:
+    name: u2404 ${{ matrix.tox_env }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    strategy:
+      matrix:
+        include:
+          - {python: '3.10', tox_env: py310}
+          - {python: '3.11', tox_env: py311}
+          - {python: '3.12', tox_env: py312}
+          - {python: '3.13', tox_env: py313}
+          - {python: '3.14', tox_env: py314}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - name: Install deps
+        run: |
+          set -o errexit -o nounset -o pipefail
+          python -m pip install tox
+      - name: Run tests
+        run: |
+          set -o errexit -o nounset -o pipefail
+          python -m tox -e "${{ matrix.tox_env }}"
+
+  check:
+    if: always()
+    needs:
+      - u2404
+    runs-on: ubuntu-latest
+    steps:
+      - uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}
