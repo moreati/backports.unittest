@@ -5,6 +5,30 @@ on:
       - main
 
 jobs:
+  macos:
+    name: macos ${{ matrix.tox_env }}
+    runs-on: macos-15
+    timeout-minutes: 2
+    strategy:
+      matrix:
+        include:
+          - {python: '3.10', tox_env: py310}
+          - {python: '3.14', tox_env: py314}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - name: Install deps
+        run: |
+          set -o errexit -o nounset -o pipefail
+          python -m pip install tox
+      - name: Run tests
+        run: |
+          set -o errexit -o nounset -o pipefail
+          python -m tox -e "${{ matrix.tox_env }}"
+
   u2404:
     name: u2404 ${{ matrix.tox_env }}
     runs-on: ubuntu-24.04
@@ -35,6 +59,7 @@ jobs:
   check:
     if: always()
     needs:
+      - macos
       - u2404
     runs-on: ubuntu-latest
     steps:
